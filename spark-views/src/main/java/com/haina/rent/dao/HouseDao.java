@@ -4,10 +4,7 @@
  */
 package com.haina.rent.dao;
 
-import com.haina.rent.model.Area;
-import com.haina.rent.model.AreaRent;
-import com.haina.rent.model.District;
-import com.haina.rent.model.Room;
+import com.haina.rent.model.*;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -35,5 +32,8 @@ public interface HouseDao {
 
     @Select("select * from house_rent_by_area_rent")
     List<AreaRent> selectAreaRent();
+
+    @Select("select * from house_rent_by_bathroom order by bathroom asc")
+    List<Bathroom> selectBathroom();
 }
 
