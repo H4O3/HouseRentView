@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"></meta>
+    <title>area</title>
+    <script src="echarts.js"></script>
+    <script src="jquery.min.js"></script>
+</head>
+<body>
+    <h2>不同地区的单位面积房价</h2>
+    <div id="main" style="width: 100%;height: 500px;"></div>
+
+    <script>
+    fetch('areaRentView')
+        .then(response => response.json())
+        .then(data => {
+            const districts = data.map(item => item.district);
+            const areas = data.map(item => item.area);
+            const rents = data.map(item => item.areaRent);
+
+            const myEcharts = echarts.init(document.getElementById("main"));
+            const option = {
+                title: {
+                    text: "",
+                    left: "center"
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['面积', '单位租金']
+                },
+                xAxis: {
+                    name: "地区",
+                    data: districts
+                },
+                yAxis: {
+                    name: "数值（面积/租金）"
+                },
+                series: [
+                    {
+                        name: '面积',
+                        type: 'bar',
+                        data: areas,
+                        tooltip: {
+                            valueFormatter: function(value) {
+                                return value + ' 平方米';
+                            }
+                        }
+                    },
+                    {
+                        name: '单位租金',
+                        type: 'bar',
+                        data: rents,
+                        tooltip: {
+                            valueFormatter: function(value) {
+                                return value + ' 元/平方米';
+                            }
+                        }
+                    }
+                ]
+            };
+            myEcharts.setOption(option);
+        });
+</script>
+
+</body>
+</html>

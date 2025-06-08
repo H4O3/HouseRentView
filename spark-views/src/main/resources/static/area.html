@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+文件说明：面积对住房租金影响可视化页面
+功能描述：使用ECharts展示不同面积的平均住房租金数据
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8"></meta>
+    <title>area</title>
+    <!-- 
+    页面依赖库说明：
+    1. ECharts：用于创建可视化图表
+    2. jQuery：提供DOM操作和AJAX请求支持
+    -->
+    <script src="echarts.js"></script>
+    <script src="jquery.min.js"></script>
+</head>
+<body>
+    <!-- 
+    页面主体结构：
+    1. 标题部分：显示分析主题
+    2. 图表容器：用于渲染ECharts图表
+    -->
+    <!-- 页面标题 -->
+    <h2>面积对住房租金的影响</h2>
+    <div id="main" style="width: 100%;height: 500px;"></div>
+<!--    &lt;!&ndash; 图表容器 &ndash;&gt;-->
+<!--    <div id="main"></div>-->
+
+    <script>
+        /*
+        * 数据获取与处理
+        * 功能：从areaDisView接口获取面积租金数据并渲染柱状图
+        * 参数：无
+        * 返回：无（直接渲染图表）
+        * 流程：
+        * 1. 发起fetch请求获取数据
+        * 2. 解析JSON响应
+        * 3. 提取面积名和平均租金数据
+        * 4. 初始化ECharts实例
+        * 5. 配置并渲染柱状图
+        */
+        fetch('areaView')
+            .then(response => response.json())//获取传递过来的json数据
+            .then(data =>{
+                //获取数据
+                const areaDis = data.map(item => item.areaDis);
+                const avg = data.map(item => item.avgRent);
+                console.log(areaDis)
+                console.log(avg)
+                const myEcharts = echarts.init(document.getElementById("main"));
+                const option = {
+                    title: {
+                        text: "面积对租金的影响",
+                        left: "center"
+                    },
+                    xAxis: {
+                        name: "面积",//设置坐标轴x轴的名字
+                        data: areaDis//设置x轴的值
+                    },
+                    yAxis: {
+                        name: "租金"//设置y轴的名字
+                    },
+                    series:
+                        {
+                            name: "面积",
+                            type: "bar",//设置图标类型为柱状图
+                            data: avg //柱状图中的展示数据的值
+                        }
+
+                };
+                myEcharts.setOption(option);
+            });
+    </script>
+</body>
+</html>
