@@ -22,7 +22,7 @@
     2. 图表容器：用于渲染ECharts图表
     -->
     <!-- 页面标题 -->
-    <h2>卧室个数对住房租金的影响</h2>
+    <h2>按卫生间个数统计平均租金</h2>
     <div id="main" style="width: 100%;height: 500px;"></div>
 <!--    &lt;!&ndash; 图表容器 &ndash;&gt;-->
 <!--    <div id="main"></div>-->
@@ -51,11 +51,11 @@
                 const myEcharts = echarts.init(document.getElementById("main"));
                 const option = {
                     title: {
-                        text: "卧室个数对租金的影响",
+                        text: "卫生间个数对租金的影响",
                         left: "center"
                     },
                     xAxis: {
-                        name: "卧室个数",//设置坐标轴x轴的名字
+                        name: "卫生间个数",//设置坐标轴x轴的名字
                         data: room//设置x轴的值
                     },
                     yAxis: {
@@ -63,7 +63,7 @@
                     },
                     series:
                         {
-                            name: "卧室个数",
+                            name: "卫生间个数",
                             type: "line",//设置图标类型为柱状图
                             data: avg //柱状图中的展示数据的值
                         }

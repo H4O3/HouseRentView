@@ -35,5 +35,11 @@ public interface HouseDao {
 
     @Select("select * from house_rent_by_bathroom order by bathroom asc")
     List<Bathroom> selectBathroom();
+
+    @Select("select * from house_rent_by_floor")
+    List<Floor> selectFloor();
+
+    @Select("select * from house_rent_by_layout")
+    List<Layout> selectLayout();
 }
 

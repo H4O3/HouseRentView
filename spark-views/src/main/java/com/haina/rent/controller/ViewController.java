@@ -28,11 +28,32 @@ public class ViewController {
      * @return 区域列表
      */
 
-    //不同区域的价格
+    //1.按行政区统计平均租金
     @RequestMapping("/districtView")
     public @ResponseBody List<District> districtsView() {
         return houseDao.selectDistrict();
     }
+
+    //2.按卫生间个数统计平均租金
+    @RequestMapping("/bathroomView")
+    public @ResponseBody List<Bathroom> bathroomView() {
+        return houseDao.selectBathroom();
+    }
+
+    // 3.按楼层统计平均租金
+    @RequestMapping("/floorView")
+    public @ResponseBody List<Floor> floorView() {
+        return houseDao.selectFloor();
+    }
+
+    //4.按照户型和租金的关系
+    @RequestMapping("/layoutView")
+    public @ResponseBody List<Layout> layoutView() {
+        return houseDao.selectLayout();
+    }
+
+
+
 
     //房间个数影响价格
     @RequestMapping("/roomView")
@@ -52,10 +73,6 @@ public class ViewController {
         return houseDao.selectAreaRent();
     }
 
-    //卧室个数影响价格
-    @RequestMapping("/bathroomView")
-    public @ResponseBody List<Bathroom> bathroomView() {
-        return houseDao.selectBathroom();
-    }
+
 
 }
