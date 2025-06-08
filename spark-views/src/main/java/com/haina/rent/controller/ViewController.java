@@ -22,12 +22,6 @@ public class ViewController {
     @Resource
     private HouseDao houseDao;
 
-    /**
-     * 处理districtView请求，返回区域列表
-     *
-     * @return 区域列表
-     */
-
     //1.按行政区统计平均租金
     @RequestMapping("/districtView")
     public @ResponseBody List<District> districtsView() {

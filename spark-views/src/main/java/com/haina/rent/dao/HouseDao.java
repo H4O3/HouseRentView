@@ -16,11 +16,6 @@ import java.util.List;
 @Repository
 public interface HouseDao {
 
-    /**
-     * 查询所有区域的房源信息
-     *
-     * @return 包含所有区域房源信息的列表
-     */
     @Select("select * from house_rent_by_district")
     List<District> selectDistrict();
 
