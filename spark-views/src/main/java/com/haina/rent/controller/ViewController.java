@@ -52,27 +52,34 @@ public class ViewController {
         return houseDao.selectLayout();
     }
 
+    //5.客厅的个数对于租金的影响
+    @RequestMapping("/livingView")
+    public @ResponseBody List<Living> livingView() {
+        return houseDao.selectLiving();
+    }
 
+    //6.朝向的个数对于租金的影响
+    @RequestMapping("/orientationView")
+    public @ResponseBody List<Orientation> orientationView() {
+        return houseDao.selectOrientation();
+    }
 
-
-    //房间个数影响价格
+    //7.卧室的个数对于租金的影响
     @RequestMapping("/roomView")
     public @ResponseBody List<Room> roomView() {
         return houseDao.selectRoom();
     }
 
-    //面积影响价格
-    @RequestMapping("/areaView")
-    public @ResponseBody List<Area> areaView() {
-        return houseDao.selectArea();
-    }
-
-    //不同区域的每平方米租金
+    //8.每平方米多少钱
     @RequestMapping("/areaRentView")
-    public @ResponseBody List<AreaRent> areaRentView() {
+    public @ResponseBody List<AreaRent> areaView() {
         return houseDao.selectAreaRent();
     }
 
-
+    //9.面积区间的统计
+    @RequestMapping("/areaRentDisView")
+    public @ResponseBody List<AreaRentDis> areaRentDisView() {
+        return houseDao.selectAreaRentDis();
+    }
 
 }
