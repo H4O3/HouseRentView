@@ -13,7 +13,6 @@ import java.util.List;
  * 控制器类，用于处理与视图相关的请求
  */
 @Controller
-//@RequestMapping("rent")
 public class ViewController {
 
     /**

@@ -28,10 +28,16 @@ public class JDBCRentTest {
         Dataset<Row> rowDataset = df.dropDuplicates();
 
         // 数据有效性过滤（排除异常面积和租金数据）
-        Dataset<Row> dfFilter = rowDataset.filter(col("area").gt(0).and(col("area").lt(1000)).and(col("rent").gt(0).and(col("rent").lt(100000))));
+        Dataset<Row> dfFilter = rowDataset.filter(
+                col("area")
+                        .gt(0)
+                        .and(col("area").lt(1000))
+                        .and(col("rent").gt(0).and(col("rent").lt(100000)))
+        );
 
         // 数据完整性处理：移除关键字段缺失的记录并填充默认值
-        Dataset<Row> dfNo = dfFilter.na().drop(new String[]{"address"}).na().fill("未知", new String[]{"centre"});
+        Dataset<Row> dfNo = dfFilter.na().drop(new String[]{"address"})
+                .na().fill("未知", new String[]{"centre"});
 
         // 配置MySQL数据库连接参数
         String url = "jdbc:mysql://localhost:3306/atguigudb";
@@ -43,7 +49,8 @@ public class JDBCRentTest {
         // 1.按行政区统计平均租金
         Dataset<Row> district = dfNo.groupBy("district")
                 // 聚合计算并格式化数值（保留两位小数）
-                .agg(round(avg("rent"), 2).alias("avg_rent"));
+                .agg(round(avg("rent"), 2)
+                        .alias("avg_rent"));
         // 数据持久化：将统计结果写入MySQL指定表（覆盖模式）
         district.write().mode("overwrite").jdbc(url, "house_rent_by_district", properties);
 
