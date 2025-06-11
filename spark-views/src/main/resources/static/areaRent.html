@@ -1,58 +1,103 @@
 <!DOCTYPE html>
+<!-- 声明文档类型为HTML5 -->
 
 <html lang="en">
+<!-- 开始HTML文档，设置语言为英语 -->
+
 <head>
+    <!-- 文档头部内容开始 -->
+
     <meta charset="utf-8"></meta>
+    <!-- 设置字符编码为UTF-8，确保中文显示正常 -->
+
     <title>AreaRent</title>
+    <!-- 设置网页标题为 "AreaRent" -->
 
     <!-- 引入 ECharts 和 jQuery 库 -->
     <script src="echarts.js"></script>
+    <!-- 引入ECharts库，用于创建图表 -->
+
     <script src="jquery.min.js"></script>
+    <!-- 引入jQuery库，简化DOM操作 -->
+
 </head>
+<!-- 文档头部内容结束 -->
+
 <body>
+    <!-- 网页主体内容开始 -->
 
-<h2>每平方米多少钱</h2>
+    <h2>每平方米多少钱</h2>
+    <!-- 标题，表示此页面展示的是每平方米租金信息 -->
 
-<!-- 用于显示图表的容器 -->
-<div id="main" style="width: 100%;height: 500px;"></div>
+    <!-- 用于显示图表的容器 -->
+    <div id="main" style="width: 100%;height: 500px;"></div>
+    <!-- 创建一个div元素作为图表的显示区域，宽度为100%，高度为500像素 -->
 
-<script>
-    // 使用 Fetch API 获取服务器数据
-    fetch('areaRentView')
-        .then(response => response.json())//获取传递过来的json数据
-        .then(data => {
-            // 从数据中提取区域和平均租金信息
-            const district = data.map(item => item.district);
-            const avg = data.map(item => item.areaRent);
-            // 日志输出区域和平均租金数据，用于调试
-            console.log(district)
-            console.log(avg)
-            // 初始化 ECharts 实例
-            const myEcharts = echarts.init(document.getElementById("main"));
-            // 配置图表选项
-            const option = {
-                title: {
-                    text: "不同区域的每平方米租金",
-                    left: "center"
-                },
-                xAxis: {
-                    name: "区域",
-                    data: district
-                },
-                yAxis: {
-                    name: "每平方米租金"
-                },
-                series:
-                    {
+    <script>
+        // 使用 Fetch API 获取服务器数据
+        fetch('areaRentView')
+            // 发起GET请求获取数据，URL为 'areaRentView'
+
+            .then(response => response.json())
+            // 将响应解析为JSON格式
+
+            .then(data => {
+                // 数据解析完成后进行处理
+
+                // 从数据中提取区域和平均租金信息
+                const district = data.map(item => item.district);
+                // 提取所有条目中的区域信息
+
+                const avg = data.map(item => item.areaRent);
+                // 提取所有条目中的平均租金信息
+
+                // 日志输出区域和平均租金数据，用于调试
+                console.log(district)
+                // 打印区域信息到控制台
+
+                console.log(avg)
+                // 打印平均租金信息到控制台
+
+                // 初始化 ECharts 实例
+                const myEcharts = echarts.init(document.getElementById("main"));
+                // 通过指定id初始化一个ECharts实例
+
+                // 配置图表选项
+                const option = {
+                    title: {
+                        text: "不同区域的每平方米租金",
+                        left: "center"
+                        // 设置图表标题，并居中对齐
+                    },
+
+                    xAxis: {
                         name: "区域",
-                        type: "bar",
-                        data: avg
-                    }
+                        data: district
+                        // 设置X轴名称为“区域”，并绑定区域数据
+                    },
 
-            };
-            // 将配置选项应用到 ECharts 实例
-            myEcharts.setOption(option);
-        });
-</script>
+                    yAxis: {
+                        name: "每平方米租金"
+                        // 设置Y轴名称为“每平方米租金”
+                    },
+
+                    series:
+                        {
+                            name: "区域",
+                            type: "bar",
+                            data: avg
+                            // 定义图表系列，类型为柱状图，绑定平均租金数据
+                        }
+                };
+
+                // 将配置选项应用到 ECharts 实例
+                myEcharts.setOption(option);
+                // 将配置项应用到图表实例上，渲染图表
+            });
+    </script>
+
 </body>
+<!-- 网页主体内容结束 -->
+
 </html>
+<!-- HTML文档结束 -->
