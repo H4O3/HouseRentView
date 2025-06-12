@@ -91,7 +91,6 @@ public class JDBCRentTest {
                 // 2. 统计每种户型的房源数量，命名为 "count"
                 .agg(round(avg("rent"), 2)
                         .alias("avg_rent"), count("*").alias("count"));
-
         // 数据持久化：将统计结果写入MySQL指定表（覆盖模式）
         layout.write().mode("overwrite").jdbc(url, "house_rent_by_layout", properties);
 
