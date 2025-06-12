@@ -62,24 +62,36 @@ public class JDBCRentTest {
         bathroom.write().mode("overwrite").jdbc(url, "house_rent_by_bathroom", properties);
 
         // 3.按楼层统计平均租金
+        // 创建一个新的列 "floor_count"，根据楼层范围对房屋进行分类。
         Dataset<Row> floor = dfNo.withColumn("floor_count",
+                        // 当 "floor" 列的值小于10时，标记为“低层”。
                         when(col("floor").lt(10), "低层")
-                                .when(col("floor")
-                                        .between(10, 30), "中层")
+                                // 当 "floor" 列的值在10到30之间时，标记为“中层”。
+                                .when(col("floor").between(10, 30), "中层")
+                                // 其他情况（即大于30）标记为“高层”。
                                 .otherwise("高层"))
+                // 按新创建的 "floor_count" 列进行分组。
                 .groupBy("floor_count")
-                // 聚合计算并格式化数值（保留两位小数）
+                // 聚合计算每个分组的平均租金，并保留两位小数。
                 .agg(round(avg("rent"), 2).alias("avg_rent"));
-        // 数据持久化：将统计结果写入MySQL指定表（覆盖模式）
-        floor.write().mode("overwrite").jdbc(url, "house_rent_by_floor", properties);
 
         //4.按照户型和租金的关系
+        // 创建一个新的列 "layout"，将房屋的室、厅、卫数量组合成字符串（用短横线连接）
+        // 例如：1-2-3 表示 1 间卧室，2 个客厅，3 个卫生间
         Dataset<Row> layout = dfNo.withColumn("layout",
+                        // 使用 concat_ws 函数（带分隔符的连接），
+                        // 第一个参数是分隔符"-"
+                        // 后续参数是要连接的列："room"(卧室数), "living"(客厅数), "bathroom"(卫生间数)
                         concat_ws("-", col("room"),
                                 col("living"), col("bathroom")))
+                // 按新创建的 "layout" 列进行分组
                 .groupBy("layout")
-                .agg(round(avg("rent"), 2).alias("avg_rent"),
-                        count("*").alias("count"));
+                // 聚合计算：
+                // 1. 计算每个户型的平均租金，并保留两位小数，命名为 "avg_rent"
+                // 2. 统计每种户型的房源数量，命名为 "count"
+                .agg(round(avg("rent"), 2)
+                        .alias("avg_rent"), count("*").alias("count"));
+
         // 数据持久化：将统计结果写入MySQL指定表（覆盖模式）
         layout.write().mode("overwrite").jdbc(url, "house_rent_by_layout", properties);
 
